@@ -1,7 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import AboutmeRoute from '../components/aboutme/aboutme.vue'
-const routes: Array<RouteRecordRaw> = [
+import UserRout from '../components/user/user.vue'
 
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    redirect: {name: 'aboutme'}
+  },
+  {
+    path: '/aboutme',
+    name: 'aboutme',
+    component: UserRout
+  }
 ]
 
 const router = createRouter({
