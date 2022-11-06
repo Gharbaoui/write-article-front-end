@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-b from-blue-700 to-transparent h-screen">
+  <div class="bg-gradient-to-t from-blue-600 to-transparent h-screen px-10 py-5">
     <manager-comp />
     <router-view />
   </div>
