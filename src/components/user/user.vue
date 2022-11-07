@@ -6,13 +6,13 @@
             <img class="rounded-full max-w-xs w-48" :src="user_img" alt="user-image">
             <div class="mt-3 font-serif font-bold text-white">{{full_name}}</div>
           </div>
-          <div class="text-center w-full mt-5 text-white font-mono py-5 border-line border-slate-200 border-t-2">
+          <div class="overflow-auto text-center w-full mt-5 text-white font-mono py-5 border-line border-slate-200 border-t-2">
             {{user_biography}}
           </div>
           <div class="flex flex-row justify-around w-full mt-5 text-white font-mono py-5 border-line border-slate-200 border-t-2">
             <!-- contacts -->
             <div v-for="(contact, index) in user_contacts" :key="index">
-              <button class="rounded-lg font-bold text-white text-center px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 cursor-pointer">
+              <button class="bg-blue-500 rounded-lg font-bold text-white text-center px-4 py-3 transition duration-300 ease-in-out hover:bg-blue-600 mr-6 cursor-pointer">
                 <a :href="contact.contact_url" target="_blank">{{contact.contact_media}} </a>
               </button>
             </div>
@@ -79,9 +79,10 @@ export default defineComponent({
 });
 
 </script>
-    
-  <style scoped>
-  .remain-height {
-    height: 80vh;
-  }
-  </style>
+
+<style scoped>
+.remain-height {
+  height: 80vh;
+}
+
+</style>
