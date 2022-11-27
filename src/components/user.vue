@@ -48,19 +48,19 @@
           <div class="flex flex-col items-center justify-center h-screen">
         <div class="flex flex-col">
             <label class="inline-flex items-center mt-3">
-                <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" :checked="full_name_check"><span class="ml-2 text-gray-700">full name</span>
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-gray-600" v-model="full_name_check"><span class="ml-2 text-gray-700">full name</span>
             </label>
 
             <label class="inline-flex items-center mt-3">
-                <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600" :checked="user_image_check"><span class="ml-2 text-gray-700">user image</span>
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600" v-model="user_image_check"><span class="ml-2 text-gray-700">user image</span>
             </label>
 
             <label class="inline-flex items-center mt-3">
-                <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" :checked="user_biography_check"><span class="ml-2 text-gray-700">user biography</span>
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" v-model="user_biography_check"><span class="ml-2 text-gray-700">user biography</span>
             </label>
 
             <label class="inline-flex items-center mt-3">
-                <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-600" :checked="contact_check"><span class="ml-2 text-gray-700">contact</span>
+                <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-600" v-model="contact_check"><span class="ml-2 text-gray-700">contact</span>
             </label>
 
           <div class="flex">
@@ -83,12 +83,18 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
+interface UserData {
+  [key: string]: any;
+  password:string;
+}
+
 export default defineComponent({
   name: 'UserComp',
   components:{
   },
   data() {
     return {
+      userdata: {password: process.env.VUE_APP_PASS} as UserData,
       full_name: '',
       user_image: null as any,
       user_biography: '',
@@ -105,10 +111,12 @@ export default defineComponent({
   },
   methods: {
     async createEmpty() {
+      this.initUserData();
       try {
         const resp = await axios({
-                method: 'get',
+                method: 'post',
                 url: `http://${process.env.VUE_APP_BACKEND_API}/user/create`,
+                data: this.userdata
         });
         if (resp.data.failed) {
           this.error = resp.data.msg;
@@ -117,28 +125,30 @@ export default defineComponent({
         console.log(e);
       }
     },
-    async userUpdate() {
-      console.log(`user update`);
-      let data:any;
+    initUserData() {
+      this.userdata = {password: process.env.VUE_APP_PASS};
       if (this.full_name_check) {
-        data.full_name = this.full_name;
+        this.userdata.full_name = this.full_name;
       } if (this.user_image_check) {
-        data.user_image = this.user_image;
+        this.userdata.user_image = this.user_image;
       } if (this.user_biography_check) {
-        data.user_biography = this.user_biography
+        this.userdata.user_biography = this.user_biography
       } if (this.contact_check) {
-        data.contact = {
+        this.userdata.contact = [{
           contact_media: this.contact_media,
           contact_url: this.contact_url,
           other: this.other,
           other_identifier: this.other_identifier
-        }
+        }]
       }
+    },
+    async userUpdate() {
+      this.initUserData();
       try {
         const resp = await axios({
-                method: 'get',
+                method: 'patch',
                 url: `http://${process.env.VUE_APP_BACKEND_API}/user/update`,
-                data: data
+                data: this.userdata
         });
         if (resp.data.failed) {
           this.error = resp.data.msg;
@@ -151,8 +161,9 @@ export default defineComponent({
     async userImage(event:any)
     {
         try {
+          
+          if (event.target.files.length > 0)
             this.user_image = await toBase64(event.target.files[0]);
-            console.log(event.target.files[0]);
         }catch (e:any)
         {
             console.error(e);
