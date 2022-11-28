@@ -163,7 +163,7 @@ export default defineComponent({
         try {
           
           if (event.target.files.length > 0)
-            this.user_image = await toBase64(event.target.files[0]);
+            this.user_image = await toBase64 (event.target.files[0]);
         }catch (e:any)
         {
             console.error(e);
