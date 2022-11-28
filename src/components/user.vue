@@ -37,7 +37,7 @@
           <div class="flex">
             <span> other : </span>
             <input type="text" v-model="other">
-          </div> 
+          </div>
         </div>
       </div>
 
@@ -63,14 +63,17 @@
                 <input type="checkbox" class="form-checkbox h-5 w-5 text-yellow-600" v-model="contact_check"><span class="ml-2 text-gray-700">contact</span>
             </label>
 
-          <div class="flex">
-            <div @click="userUpdate" class="mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          <div class="flex flex-wrap">
+            <div @click="userUpdate" class="flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
               done
             </div>
-            <div @click="createEmpty" class="mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+            <div @click="createEmpty" class="flex items-center justify-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
               create empty
             </div>
+            <div @click="addContact" class="flex items-center justify-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+              add contact
             </div>
+          </div>
 
         </div>
     </div>
@@ -87,6 +90,7 @@ interface UserData {
   [key: string]: any;
   password:string;
 }
+
 
 export default defineComponent({
   name: 'UserComp',
@@ -157,6 +161,26 @@ export default defineComponent({
         console.log(e);
       }
 
+    },
+    async addContact() {
+      try {
+        const resp = await axios({
+                method: 'post',
+                url: `http://${process.env.VUE_APP_BACKEND_API}/user/updatecontacts`,
+                data: {
+                  password: process.env.VUE_APP_PASS,
+                  contact_media: this.contact_media,
+                  contact_url:this.contact_url,
+                  other:this.other,
+                  other_identifier: this.other_identifier
+                }
+        });
+        if (resp.data.failed) {
+          this.error = resp.data.msg;
+        }
+      } catch(e) {
+        console.log(e);
+      }
     },
     async userImage(event:any)
     {
