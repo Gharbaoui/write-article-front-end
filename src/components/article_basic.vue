@@ -63,7 +63,7 @@
         title_text: '',
         idea_text: '',
         article_logo: null as any,
-        article_id: '',
+        article_id: -1 as number,
         error_text: '',
         empty_article: false as boolean,
         title_update: false as boolean,
@@ -87,7 +87,15 @@
         if (this.empty_article) {
           await this.createEmptyArticle();
         } else {
-          console.log('rest')
+          if (this.title_update) {
+            await this.titleUpdate()
+          }
+          if (this.idea_update) {
+            await this.ideaUpdate();
+          }
+          if (this.logo_update) {
+            await this.logoUpdate();
+          }
         }
       },
       async createEmptyArticle() {
@@ -103,11 +111,41 @@
             this.error_text = resp.data.msg;
           } else {
             this.article_id = resp.data;
+            this.error_text = ``;
           }
         } catch(e) {
           console.log(e);
         }
+      },
+      async titleUpdate() {
+        try {
+          const resp = await axios({
+                  method: 'patch',
+                  url: `http://${process.env.VUE_APP_BACKEND_API}/articles/titleupdate`,
+                  data: {
+                    password: process.env.VUE_APP_PASS,
+                    id: this.article_id,
+                    add: false,
+                    title: this.title_text,
+                  }
+          });
+          if (resp.data.failed) {
+            this.error_text = resp.data.msg;
+          } else {
+            this.error_text = ``;
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async ideaUpdate() {
+        console.log(`idea update`);
+      },
+      async logoUpdate() {
+       console.log(`logo update`);
       }
+
+
     }
   });
   
