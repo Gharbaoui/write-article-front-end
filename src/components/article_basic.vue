@@ -139,7 +139,25 @@
         }
       },
       async ideaUpdate() {
-        console.log(`idea update`);
+        try {
+          const resp = await axios({
+                  method: 'patch',
+                  url: `http://${process.env.VUE_APP_BACKEND_API}/articles/ideaupdate`,
+                  data: {
+                    password: process.env.VUE_APP_PASS,
+                    id: this.article_id,
+                    add: false,
+                    idea: this.idea_text,
+                  }
+          });
+          if (resp.data.failed) {
+            this.error_text = resp.data.msg;
+          } else {
+            this.error_text = ``;
+          }
+        } catch(e) {
+          console.log(e);
+        }
       },
       async logoUpdate() {
        console.log(`logo update`);
