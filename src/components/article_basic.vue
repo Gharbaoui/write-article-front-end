@@ -160,7 +160,24 @@
         }
       },
       async logoUpdate() {
-       console.log(`logo update`);
+        try {
+          const resp = await axios({
+                  method: 'patch',
+                  url: `http://${process.env.VUE_APP_BACKEND_API}/articles/logoupdate`,
+                  data: {
+                    password: process.env.VUE_APP_PASS,
+                    id: this.article_id,
+                    logo: this.article_logo  
+                  }
+          });
+          if (resp.data.failed) {
+            this.error_text = resp.data.msg;
+          } else {
+            this.error_text = ``;
+          }
+        } catch(e) {
+          console.log(e);
+        }
       }
 
 
