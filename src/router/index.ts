@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import userCompo from '../components/user.vue';
+import articleBasicCompo from '../components/article_basic.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,6 +11,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/user',
     name: 'user',
     component: userCompo
+  },
+  {
+    path: '/articlebasic',
+    name: 'articlebasic',
+    component: articleBasicCompo
   }
 ]
 
