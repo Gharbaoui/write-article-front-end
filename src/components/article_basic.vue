@@ -86,7 +86,10 @@
       async updateBasicArticle() {
         if (this.empty_article) {
           await this.createEmptyArticle();
+        } else if (this.title_update && this.idea_update && this.logo_update) {
+          await this.updateAllAtOnce();
         } else {
+
           if (this.title_update) {
             await this.titleUpdate()
           }
@@ -96,6 +99,28 @@
           if (this.logo_update) {
             await this.logoUpdate();
           }
+        }
+      },
+      async updateAllAtOnce() {
+        try {
+          const resp = await axios({
+                  method: 'patch',
+                  url: `http://${process.env.VUE_APP_BACKEND_API}/articles/basicarticle`,
+                  data: {
+                    password: process.env.VUE_APP_PASS,
+                    id: this.article_id,
+                    title: this.title_text,
+                    idea: this.idea_text,
+                    logo: this.article_logo
+                  }
+          });
+          if (resp.data.failed) {
+            this.error_text = resp.data.msg;
+          } else {
+            this.error_text = ``;
+          }
+        } catch(e) {
+          console.log(e);
         }
       },
       async createEmptyArticle() {
