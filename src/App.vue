@@ -7,6 +7,9 @@
       <div class="mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
         <router-link :to="{name: 'articlebasic'}">articlebasic</router-link>
       </div>
+      <div class="mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <router-link :to="{name: 'article'}">article</router-link>
+      </div>
     </nav>
     <div style="height: 90%;">
       <router-view  />
