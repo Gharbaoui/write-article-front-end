@@ -46,20 +46,20 @@
                 <div class="flex flex-col h-full justify-around">
                     <div>
                         <label class="text-white text-2xl">Prev:</label>
-                        <input type="text" v-model="prev_value">
+                        <input type="text" v-model="prvnext.prev">
                     </div>
-                    <div @click="updatePrev" class="cursor-pointer flex justify-center items-center h-10 w-24 mr-10 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-                        update
+                    <div @click="updatePrev" class="cursor-pointer flex justify-center items-center h-10 w-26 mr-10 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+                        update prev
                     </div>
                 </div>
                 <div class="flex flex-col h-full justify-around">
                     <div>
                         <label class="text-white text-2xl">Next:</label>
-                        <input type="text" v-model="next_value">
+                        <input type="text" v-model="prvnext.next">
                     </div>
                     <div class="flex justify-end">
                         <div @click="updateNext" class="cursor-pointer flex justify-center items-center h-10 w-24 mr-10 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-                            next
+                            update next
                         </div>
                     </div>
                 </div>
@@ -81,13 +81,19 @@ import { defineComponent } from 'vue';
             preq_index: -1,
             reponse_msg: '',
             failure: false,
-            prev_value: -1,
-            next_value: -1,
             preqObj: {
                 req_title: '',
                 req_url: '',
                 is_local_article: false,
-            } as any
+            } as any,
+            prvnext: {
+                id: -1,
+                password: process.env.VUE_APP_PASS,
+                prev: -1,
+                next: -1,
+                update_prv: false,
+                update_next: false,
+            }
         }
     },
     methods: {
@@ -122,12 +128,9 @@ import { defineComponent } from 'vue';
             } catch(e) {
                 console.log(e);
             }
-
-            console.log(`removing`);
         },
         async updatePreq() {
             try {
-                console.log(this.preq_index);
                 const resp = await axios({
                     method: 'patch',
                     url: `http://${process.env.VUE_APP_BACKEND_API}/articles/prequpdate`,
@@ -143,17 +146,32 @@ import { defineComponent } from 'vue';
                 console.log(e);
             }
 
-            console.log('update');
         },
         async updatePrev() {
-            // try {} catch(e) {}
 
-            console.log(`prev upadted`);
+            this.prvnext.update_next = false;
+            this.prvnext.update_prv = true;
+            await this.prvAndNext();
         },
         async updateNext() {
-            // try {} catch(e) {}
-
-            console.log(`next upadted`);
+            this.prvnext.update_next = true;
+            this.prvnext.update_prv = false;
+            await this.prvAndNext();
+        },
+        async prvAndNext() {
+            try {
+                this.prvnext.id = Number(this.article_id);
+                this.prvnext.prev = Number(this.prvnext.prev);
+                this.prvnext.next = Number(this.prvnext.next);
+                const resp = await axios({
+                    method: 'patch',
+                    url: `http://${process.env.VUE_APP_BACKEND_API}/articles/nextprvarticle`,
+                    data: this.prvnext
+                });
+                this.backendresponse(resp, "success");
+            } catch(e) {
+                console.log(e);
+            }
         },
         backendresponse(resp:any, msg:string) {
             if (resp.data.failed) {
