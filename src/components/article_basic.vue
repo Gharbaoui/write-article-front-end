@@ -46,7 +46,10 @@
           <!-- buttosn -->
           <div @click="updateBasicArticle" class="flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
               done
-            </div>
+          </div>
+          <div @click="goToArticleAdvanceEdit" class="flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+              advanced
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +58,7 @@
   <script lang="ts">
   import { defineComponent } from 'vue';
   import axios from 'axios';
+  import router from '@/router';
 
   export default defineComponent({
     name: 'ArticleBasicCompo',
@@ -203,6 +207,9 @@
         } catch(e) {
           console.log(e);
         }
+      },
+      goToArticleAdvanceEdit() {
+        router.push({name: 'articlereqs', query: {article_id: this.article_id}});
       }
 
 
