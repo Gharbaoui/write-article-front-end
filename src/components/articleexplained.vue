@@ -74,6 +74,9 @@
         <div @click="updateConclusion" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           conclusion
         </div>
+        <div @click="switchState" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          state toggel
+        </div>
       </div>
     </div>
   </template>
@@ -232,6 +235,22 @@ import { defineComponent } from 'vue';
             }
           });
           this.backendresponse(resp, "update conclusion success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async switchState() {
+        try {
+          // conclusionupdate
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/state`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+            }
+          });
+          this.backendresponse(resp, `state now is: ${resp.data.state}`);
         } catch(e) {
           console.log(e);
         }
