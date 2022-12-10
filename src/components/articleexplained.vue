@@ -56,7 +56,7 @@
         <div @click="addExplained"  class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           add
         </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <div @click="removeExplained" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           remove
         </div>
         <div  @click="updateExplained"  class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
@@ -146,6 +146,22 @@ import { defineComponent } from 'vue';
             }
           });
           this.backendresponse(resp, "update success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async removeExplained () {
+        try {
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedremove`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              index: this.explained_index,
+            }
+          });
+          this.backendresponse(resp, "remove success");
         } catch(e) {
           console.log(e);
         }
