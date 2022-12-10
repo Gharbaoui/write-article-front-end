@@ -62,17 +62,17 @@
         <div  @click="updateExplained"  class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           update
         </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <div @click="updateTxt" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           text
         </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-          conclusion
-        </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <div @click="updateImg" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           image
         </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <div @click="updateCode" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           code
+        </div>
+        <div @click="updateConclusion" class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          conclusion
         </div>
       </div>
     </div>
@@ -162,6 +162,76 @@ import { defineComponent } from 'vue';
             }
           });
           this.backendresponse(resp, "remove success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async updateTxt() {
+        try {
+          // explainedtxt
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedtxt`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              explain_txt: this.explaine_txt,
+              index: this.explained_index
+            }
+          });
+          this.backendresponse(resp, "update text success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async updateImg() {
+        try {
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedimg`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              explain_img: this.explaine_img,
+              index: this.explained_index
+            }
+          });
+          this.backendresponse(resp, "update image success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async updateCode() {
+        try {
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedcode`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              code_snipest: this.code_snipest,
+              index: this.explained_index
+            }
+          });
+          this.backendresponse(resp, "update code success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async updateConclusion() {
+        try {
+          // conclusionupdate
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/conclusionupdate`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              add: false,
+              conclusion: this.conculsion
+            }
+          });
+          this.backendresponse(resp, "update conclusion success");
         } catch(e) {
           console.log(e);
         }
