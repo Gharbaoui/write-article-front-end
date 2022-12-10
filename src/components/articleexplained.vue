@@ -59,7 +59,7 @@
         <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           remove
         </div>
-        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <div  @click="updateExplained"  class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
           update
         </div>
         <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
@@ -127,6 +127,25 @@ import { defineComponent } from 'vue';
             }
           });
           this.backendresponse(resp, "added success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      async updateExplained() {
+        try {
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedupdate`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              index: this.explained_index,
+              explain_txt: this.explaine_txt,
+              explain_img: this.explaine_img,
+              code_snipest: this.code_snipest
+            }
+          });
+          this.backendresponse(resp, "update success");
         } catch(e) {
           console.log(e);
         }
