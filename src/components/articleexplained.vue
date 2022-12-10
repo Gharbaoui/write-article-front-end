@@ -11,7 +11,7 @@
         </div>
         <div>
           <span class="block text-white text-xl"> response: </span>
-          <textarea name="" id="" cols="30" rows="5" v-model="response"></textarea>
+          <textarea name="" id="" cols="30" rows="5" :class="{'bg-red-300 rotate-12': failure}" v-model="response"></textarea>
         </div>
       </div>
       <div class="flex h-3/5 justify-between">
@@ -53,33 +53,34 @@
           <span class="text-white text-xl">index: </span>
           <input type="text" v-model="explained_index">
         </div>
-        <div  class="flex justify-center items-center mt-5 mr-5 h-8 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              add
+        <div @click="addExplained"  class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          add
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              remove
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          remove
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              update
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          update
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              text
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          text
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              conclusion
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          conclusion
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              image
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          image
         </div>
-        <div class="flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
-              code
+        <div class="cursor-pointer flex justify-center items-center mt-5 mr-5 h-8  w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          code
         </div>
       </div>
     </div>
   </template>
   
   <script lang="ts">
-  import { defineComponent } from 'vue';
+  import axios from 'axios';
+import { defineComponent } from 'vue';
   
   export default defineComponent({
     name: 'ArticleExplainedComp',
@@ -88,6 +89,7 @@
         article_id: this.$route.query.article_id,
         conculsion: '',
         response: '',
+        failure: false,
         explaine_txt: '',
         explaine_img: {
           path: null as any,
@@ -110,7 +112,40 @@
           {
               console.error(e);
           }
-      }
+      },
+      async addExplained() {
+        try {
+          const resp = await axios({
+            method: `patch`,
+            url: `http://${process.env.VUE_APP_BACKEND_API}/articles/explainedadd`,
+            data: {
+              password: process.env.VUE_APP_PASS,
+              id: this.article_id,
+              explain_txt: this.explaine_txt,
+              explain_img: this.explaine_img,
+              code_snipest: this.code_snipest
+            }
+          });
+          this.backendresponse(resp, "added success");
+        } catch(e) {
+          console.log(e);
+        }
+      },
+      backendresponse(resp:any, msg:string) {
+        if (resp.data.failed) {
+                this.failure = true;
+                this.response = resp.data.msg;
+            } else {
+                this.response = msg;
+        }
+      },
+    },
+    watch: {
+    failure() {
+      setTimeout(() => {
+          this.failure = false;
+      }, 1000);
+    }
     }
   });
   const toBase64 =(file:any) => new Promise((resolve, reject) => {
