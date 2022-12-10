@@ -64,16 +64,20 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="w-full h-1/4 items-center flex justify-center">
+            <div @click="goToExplained" class="cursor-pointer flex justify-center items-center h-10 w-24 mr-10 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+                explained
+            </div>
         </div>
     </div>
 </template>
-  
-  <script lang="ts">
-  import axios from 'axios';
+
+<script lang="ts">
+import axios from 'axios';
 import { defineComponent } from 'vue';
-  
-  export default defineComponent({
+import router from '@/router';
+export default defineComponent({
     name: 'ArticleReqsCompo',
     data() {
         return {
@@ -180,6 +184,9 @@ import { defineComponent } from 'vue';
                 } else {
                     this.reponse_msg = msg;
             }
+        },
+        goToExplained() {
+            router.push({name: 'articleexplained', query: {article_id: this.article_id}});
         }
     },
     watch: {
@@ -189,6 +196,6 @@ import { defineComponent } from 'vue';
             }, 1000);
         }
     }
-  });
-  </script>
+});
+</script>
   
