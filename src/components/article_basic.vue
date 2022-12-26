@@ -44,10 +44,10 @@
         </div>
         <div class="h-1/6">
           <!-- buttosn -->
-          <div @click="updateBasicArticle" class="flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          <div @click="updateBasicArticle" class="cursor-pointer flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
               done
           </div>
-          <div @click="goToArticleAdvanceEdit" class="flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+          <div @click="goToArticleAdvanceEdit" class="cursor-pointer flex justify-center items-center mt-5 mr-5 w-24 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
               advanced
           </div>
         </div>
