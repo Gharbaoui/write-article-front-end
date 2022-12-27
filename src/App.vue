@@ -13,6 +13,9 @@
       <div class="mr-5 px-2 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
         <router-link :to="{name: 'articleexplained'}">articleexplained</router-link>
       </div>
+      <div class="mr-5 px-2 border-solid border-2 border-sky-500 py-3 text-center rounded-lg bg-sky-400 hover:bg-black text-white font-serif">
+        <router-link :to="{name: 'pendingarticles'}">pendingarticles</router-link>
+      </div>
     </nav>
     <div style="height: 90%;">
       <router-view  />
@@ -22,6 +25,7 @@
 </template>
 
 <script lang="ts">
+// pendingarticles
 import { defineComponent } from 'vue';
 
 export default defineComponent({
