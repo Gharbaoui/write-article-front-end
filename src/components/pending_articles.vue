@@ -58,7 +58,7 @@ import { defineComponent } from 'vue';
         }
       },
       articlePreview(id:number) {
-        console.log(`called with ${id} preview`);
+        router.push({name: 'articlepreview', query: {articleid: id}});
       },
       articleEdit(id:number) {
         router.push({name: 'articleexplained', query: {article_id: id}});

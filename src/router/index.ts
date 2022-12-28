@@ -4,6 +4,7 @@ import articleBasicCompo from '../components/article_basic.vue';
 import articleReqsCompo from '../components/article_reqs.vue';
 import articleExplainedComp from '../components/articleexplained.vue';
 import pendingArticlesComp from '../components/pending_articles.vue';
+import articlePreviewComp from '../components/preview.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/pendingarticles',
     name: 'pendingarticles',
     component: pendingArticlesComp
+  },
+  {
+    path: '/articlepreview',
+    name: 'articlepreview',
+    component: articlePreviewComp
   }
 ]
 
